@@ -1,0 +1,27 @@
+{
+    "name": "algorithmia/algorithmia",
+    "description": "PHP Client for Algorithmia.com",
+    "homepage": "https://algorithmia.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jon Peck",
+            "email": "jpeck@algorithmia.com"
+        },
+        {
+            "name": "Ken Burcham",
+            "email": "kenburcham@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6"
+    },
+    "autoload": {
+        "psr-0": {
+            "Algorithmia": "src/"
+        }
+    }
+}

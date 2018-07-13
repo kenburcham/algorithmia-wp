@@ -1,0 +1,5 @@
+{
+    "require": {
+        "algorithmia/algorithmia": "^1.0"
+    }
+}

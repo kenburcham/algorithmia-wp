@@ -1,0 +1,3 @@
+tests/apikey.txt
+vendor/*
+tests/opencv_output.png
