@@ -28,11 +28,10 @@ function algo_get_tags_for_attachment($in_post_id)
     //setup some variables
     $object_recognition_algorithm = "deeplearning/ObjectDetectionCOCO/0.2.1";
     $algo_remote_folder = "data://.my/algo_wp";
-    $upload_to_algorithmia = false;
+    $upload_to_algorithmia = true;
 
     //fake it for now
-    $fake_input_url = "https://www.kariwhite.net/wp-content/uploads/2011/12/our-camping-trip.jpg";
-
+    //$fake_input_url = "data://kenburcham/algo_wp/GtvDM8X.jpg";//"https://www.kariwhite.net/wp-content/uploads/2011/12/our-camping-trip.jpg";
 
     if($upload_to_algorithmia)
     {
@@ -61,7 +60,7 @@ function algo_get_tags_for_attachment($in_post_id)
 
     }
     
-    $input = $fake_input_url;
+    //$input = $fake_input_url;
     $algo = $client->algo($object_recognition_algorithm);
     $result = $algo->pipe($input)->result;
 
