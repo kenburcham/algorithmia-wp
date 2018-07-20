@@ -1,14 +1,10 @@
 <?php 
 
 /*
-*  Adds the options page that appears on the Settings menu
+*  Adds the "Algorithmia" options page that appears on the Settings menu
 */
 
 if ( ! defined('ABSPATH')) exit;  // if direct access
-
-/**
- * Registers an options page under Settings.
- */
 
  function algo_settings_menuitem() {
     add_options_page( 
@@ -33,12 +29,8 @@ function algo_options_page()
         <h1><?= esc_html(get_admin_page_title()); ?></h1>
         <form action="options.php" method="post">
             <?php
-            // output security fields for the registered setting "algo_options"
             settings_fields('algo');
-            // output setting sections and their fields
-            // (sections are registered for "algo", each field is registered to a specific section)
             do_settings_sections('algo');
-            // output save settings button
             submit_button('Save Settings');
             ?>
         </form>

@@ -1,41 +1,54 @@
 <?php
 /*
-Plugin Name: Algorithmia Intelligent Algorithms
+Plugin Name: Algorithmia AI
 Plugin URI: https://algorithmia.com
 Description: Use AI to power your WordPress websites.
 Text Domain: algo
 Version: 1.0
-Author: kenburcham
+Author: kenburcham@gmail.com
 License: MIT
 */
+
+/*
+
+This plugin demonstrates Algorithmia's PHP client (https://algorithmia.com/developers/clients/php/) 
+as well as provides an example for integrating any Algorithmia algorithm into your 
+WordPress website. 
+
+To add support for a new algorithm, copy/create a file in the /algorithms folder of the plugin
+and follow the same pattern you see in our examples. We just create a hook or a feature and then 
+fire off a call to do some AI magic on Algorithmia's platform. Files in the /algorithms folder will be
+loaded automatically.
+
+*/
+
 
 if ( ! defined('ABSPATH')) exit;  // if direct access
 
 define( 'ALGO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'ALGO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-/*
-function load_algo_scripts() {
-    exit;
-    wp_register_style( 'jquerymodalcss', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css' );
-    wp_enqueue_style( 'jquerymodalcss' );
-    wp_enqueue_script( 'jquerymodaljs', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js', array( 'jquery' ) );
-    //wp_enqueue_script( 'algojs', plugin_dir_url(__FILE__) .'algo.js', array( 'jquery' ) );
+require_once(ALGO_PLUGIN_DIR.'vendor/autoload.php');    //load algorithmia client
+require_once(ALGO_PLUGIN_DIR.'admin_page.php');         //setup settings page
+
+//load the algorithms we have available
+foreach (glob(ALGO_PLUGIN_DIR.'algorithms/*.php') as $algo_file)
+{
+    include_once $algo_file;
 }
 
-add_action('wp_enqueue_scripts', 'load_algo_scripts');
-*/
+//check to see if api key is setup... if not, give an admin notice
+add_action('admin_notices', 'algo_check_api_key');
 
-require_once(ALGO_PLUGIN_DIR.'vendor/autoload.php'); //load algorithmia client
-require_once(ALGO_PLUGIN_DIR.'admin_page.php');
-
-$ALGO_APIKEY = get_option('algo_options')['algo_field_api'];
-$client = Algorithmia::client($ALGO_APIKEY);
-
-//TODO: check to see if api key is setup... if not, give an admin notice
-
-//TODO: automatically load the files in the algorithms dir
-require_once(ALGO_PLUGIN_DIR.'algorithms/upload_auto_tag.php');
-require_once(ALGO_PLUGIN_DIR.'algorithms/upload_nudity_detect.php');
+function algo_check_api_key(){
+    $options = get_option('algo_options');
+    
+    if(!array_key_exists('algo_field_api',$options) || trim($options['algo_field_api']==""))
+    {
+        echo '<div class="notice notice-warning is-dismissible">
+             <p>Warning: Your Algorithmia plugin is enabled but no API key is set. Please go to Settings->Algorithmia to set your API key.</p>
+         </div>';
+    }
+}
 
 ?>
