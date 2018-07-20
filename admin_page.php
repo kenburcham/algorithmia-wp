@@ -53,6 +53,9 @@ function algo_options_page()
 function algo_settings_init() {
     // register a new setting for "algo" page
     register_setting( 'algo', 'algo_options' );
+
+    if(!get_option('algo_options'))
+        add_option('algo_options',[]);
     
     // register a new section in the "algo" page
     add_settings_section(
@@ -73,8 +76,24 @@ function algo_settings_init() {
             'label_for' => 'algo_field_api',
             'class' => 'algo_row',
             'algo_custom_data' => 'custom',
+            'default' => ''
         ]
     );
+
+    add_settings_field(
+        'algo_field_uploadtoalgo',                       //id
+        'Upload files to Algorithmia for processing? (required for localhost)',                              //title
+        'algo_field_checkbox_cb',                    //callback for text fields
+        'algo',                         //page (menu-slug)
+        'algo_section_api',                     //section
+        [                                       //args
+            'label_for' => 'algo_field_uploadtoalgo',
+            'class' => 'algo_row',
+            'algo_custom_data' => 'custom',
+            'default' => true
+        ]
+    );
+
 }
  
 /**
@@ -94,8 +113,26 @@ function algo_section_api_cb( $args ) {
 
 function algo_field_text_cb ($args) {
 
+    $options = algo_set_option_default($args); 
+
+    echo '<input type="text" size="50" id="'  . $args['label_for'] . '" name="algo_options['  . $args['label_for'] . ']" value="' . $options[ $args['label_for'] ] . '"></input>';
+}
+
+function algo_field_checkbox_cb ($args) {
+
+    $options = algo_set_option_default($args); 
+
+    ?>
+    <input type="checkbox" id="<?php echo $args['label_for']?>" name="algo_options[<?php echo $args['label_for'] ?>]" 
+        value="1"<?php checked( 1== $options[ $args['label_for'] ] )?> />
+    <?php
+}
+
+function algo_set_option_default($args){
     $options = get_option('algo_options'); 
 
-    echo '<input type="text" id="'  . $args['label_for'] . '" name="algo_options['  . $args['label_for'] . ']" value="' . $options[''  . $args['label_for'] . ''] . '"></input>';
-    
+    if(!array_key_exists($args['label_for'],$options))
+        $options[ $args['label_for'] ] = $args['default'];
+
+    return $options;
 }

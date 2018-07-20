@@ -5,33 +5,34 @@
 */
 
 
-
-
 add_filter('add_attachment', 'algo_set_image_meta');
 
 function algo_set_image_meta( $post_ID ){
     
-	if ( wp_attachment_is_image( $post_ID ) ) {
-		// Set the image alt-text
-		update_post_meta( $post_ID, '_wp_attachment_image_alt', algo_get_tags_for_attachment($post_ID) );
-
-	} 
+    if (array_key_exists('algo_field_uat_enabled', get_option('algo_options')) && get_option('algo_options')['algo_field_uat_enabled'])
+    {
+        if ( wp_attachment_is_image( $post_ID ) ) {
+            // Set the image alt-text
+            update_post_meta( $post_ID, '_wp_attachment_image_alt', algo_get_tags_for_attachment($post_ID) );
+        } 
+    }
 }
 
 function algo_get_tags_for_attachment($in_post_id)
 {
-
     //setup our Algorithmia client
     $ALGO_APIKEY = get_option('algo_options')['algo_field_api'];
     $client = Algorithmia::client($ALGO_APIKEY);
 
     //setup some variables
-    $object_recognition_algorithm = "deeplearning/ObjectDetectionCOCO/0.2.1";
-    $algo_remote_folder = "data://.my/algo_wp";
-    $upload_to_algorithmia = true;
+    $object_recognition_algorithm = get_option('algo_options')['algo_field_uat_algo'];
+    $algo_remote_folder = get_option('algo_options')['algo_field_uat_remote_folder'];
 
-    //fake it for now
-    //$fake_input_url = "data://kenburcham/algo_wp/GtvDM8X.jpg";//"https://www.kariwhite.net/wp-content/uploads/2011/12/our-camping-trip.jpg";
+    $upload_to_algorithmia = 
+        array_key_exists('algo_field_uploadtoalgo', get_option('algo_options')) && get_option('algo_options')['algo_field_uploadtoalgo'];
+
+    //fake an external url
+    //$fake_input_url = "https://www.kariwhite.net/wp-content/uploads/2011/12/our-camping-trip.jpg";
 
     if($upload_to_algorithmia)
     {
@@ -40,7 +41,7 @@ function algo_get_tags_for_attachment($in_post_id)
 
         $algo_wp = $client->dir($algo_remote_folder);
         if(!$algo_wp->exists()) {
-            $algo_wp->create(Algorithmia\ACL::ANYONE); //so that the ObjRecognizer algo can analyze the file
+            $algo_wp->create(Algorithmia\ACL::ANYONE); //so that the ObjRecognizer algo can analyze the file (note: NOT public/anonymous available)
         }
 
         $file = $algo_wp->putFile($image_path);
@@ -55,19 +56,17 @@ function algo_get_tags_for_attachment($in_post_id)
         $input = $file->getDataUrl();
 
     } else { //otherwise just use the url (doesn't work for localhost because algo can't access the file via the url)
-        //$image_url = get_post( $post_ID )->guid; //url to the file on our server
-        $input = $fake_input_url;
-
+        $input = get_post( $in_post_id )->guid; //url to the file on our server
     }
-    
-    //$input = $fake_input_url;
+
     $algo = $client->algo($object_recognition_algorithm);
     $result = $algo->pipe($input)->result;
-
+    
     $labels = [];
 
     foreach($result->boxes as $item) {
-        $labels[]=$item->label;
+        if(!in_array($item->label, $labels))
+            $labels[]=$item->label;
     }
 
     return implode(" ",$labels);
@@ -77,5 +76,71 @@ function algo_get_tags_for_attachment($in_post_id)
 
 
 //admin section for this algorithm
-//options = enabled, preview pic, upload file to algo
+//options = enabled
+
+function algo_upload_auto_tag_settings_init() {
+
+    // register a new section in the "algo" page
+    add_settings_section(
+        'algo_section_uat',     //id
+        'Feature: Auto-tag Uploads',      //title
+        'algo_section_uat_cb',  //callback
+        'algo'          //page (menu-slug)
+    );
+
+
+    add_settings_field(
+        'algo_field_uat_enabled',                       //id
+        'Enable this feature',                              //title
+        'algo_field_checkbox_cb',                    //callback for text fields
+        'algo',                         //page (menu-slug)
+        'algo_section_uat',                     //section
+        [                                       //args
+            'label_for' => 'algo_field_uat_enabled',
+            'class' => 'algo_row',
+            'algo_custom_data' => 'custom',
+            'default' => false
+        ]
+    );
+
+    add_settings_field(
+        'algo_field_uat_algo',                       //id
+        'Object Detection Algorithm',                              //title
+        'algo_field_text_cb',                    //callback for text fields
+        'algo',                         //page (menu-slug)
+        'algo_section_uat',                     //section
+        [                                       //args
+            'label_for' => 'algo_field_uat_algo',
+            'class' => 'algo_row',
+            'algo_custom_data' => 'custom',
+            'default' => "deeplearning/ObjectDetectionCOCO/0.2.1"
+        ]
+    );
+
+    add_settings_field(
+        'algo_field_uat_remote_folder',                       //id
+        'Remote Folder (if Upload to Algorithmia is selected)',                              //title
+        'algo_field_text_cb',                    //callback for text fields
+        'algo',                         //page (menu-slug)
+        'algo_section_uat',                     //section
+        [                                       //args
+            'label_for' => 'algo_field_uat_remote_folder',
+            'class' => 'algo_row',
+            'algo_custom_data' => 'custom',
+            'default' => "data://.my/algo_wp"
+        ]
+    );
+
+    
+}
+
+function algo_section_uat_cb( $args ) {
+    ?>
+        <p id="<?php echo esc_attr( $args['id'] ); ?>">
+        <?php esc_html_e( 'This algorithm auto-tags uploaded files and adds the AI discovered labels to the alt-text of the image.','algo' ); ?>
+        </p>
+    <?php
+   }
+
+add_action( 'admin_init', 'algo_upload_auto_tag_settings_init' );
 
