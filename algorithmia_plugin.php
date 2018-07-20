@@ -12,7 +12,7 @@ License: MIT
 /*
 
 This plugin demonstrates Algorithmia's PHP client (https://algorithmia.com/developers/clients/php/) 
-as well as provides an example for integrating any Algorithmia algorithm into your 
+as well as provides a template for integrating any Algorithmia algorithm into your 
 WordPress website. 
 
 To add support for a new algorithm, copy/create a file in the /algorithms folder of the plugin
