@@ -34,6 +34,8 @@ $client = Algorithmia::client($ALGO_APIKEY);
 
 //TODO: check to see if api key is setup... if not, give an admin notice
 
+//TODO: automatically load the files in the algorithms dir
 require_once(ALGO_PLUGIN_DIR.'algorithms/upload_auto_tag.php');
+require_once(ALGO_PLUGIN_DIR.'algorithms/upload_nudity_detect.php');
 
 ?>

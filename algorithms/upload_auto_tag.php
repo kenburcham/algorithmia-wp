@@ -13,7 +13,8 @@ function algo_set_image_meta( $post_ID ){
     {
         if ( wp_attachment_is_image( $post_ID ) ) {
             // Set the image alt-text
-            update_post_meta( $post_ID, '_wp_attachment_image_alt', algo_get_tags_for_attachment($post_ID) );
+            $current_meta = get_post_meta($in_post_id, '_wp_attachment_image_alt',true );
+            update_post_meta( $post_ID, '_wp_attachment_image_alt', algo_get_tags_for_attachment($post_ID). " ". $current_meta );
         } 
     }
 }

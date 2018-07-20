@@ -90,7 +90,7 @@ function algo_settings_init() {
             'label_for' => 'algo_field_uploadtoalgo',
             'class' => 'algo_row',
             'algo_custom_data' => 'custom',
-            'default' => true
+            'default' => false
         ]
     );
 
