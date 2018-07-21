@@ -1,6 +1,6 @@
 <?php
 /*
-* Use AI to add a brief abstract to the top of a new post (only)
+* Use AI to add a brief abstract to the top of a post
 * using https://algorithmia.com/algorithms/nlp/Summarizer
 */
 
@@ -15,27 +15,34 @@ add_filter('content_save_pre', 'algo_summarize_post');
 //       one previously generated.
 function algo_summarize_post( $in_content ){
     
-    $summary_title = "<h3>Algorithmia AI Generated Summary</h3>";
+    $content = $in_content;
 
-    //bail out if we've been here before!
-    if(strpos($in_content, $summary_title) !== false)
-        return $in_content;
+    //if the setting is checked to enable this feature
+    if (array_key_exists('algo_field_psum_enabled', get_option('algo_options')) && get_option('algo_options')['algo_field_psum_enabled'])
+    {
 
-    //setup our Algorithmia client
-    $apikey = get_option('algo_options')['algo_field_api'];
-    $client = Algorithmia::client($apikey);
+        $summary_title = "<h3>Algorithmia AI Generated Summary</h3>";
 
-    //send our post content to Algorithmia's AI for processing!
-    $algo = $client->algo("nlp/Summarizer/0.1.8");
-    $result = $algo->pipe($in_content)->result;
+        //bail out if we've been here before!
+        if(strpos($content, $summary_title) !== false)
+            return $content;
 
-    //concatenate our final result
-    $final_content = $summary_title.
-                    $result.
-                    "<hr/>".
-                    $in_content;
+        //setup our Algorithmia client
+        $apikey = get_option('algo_options')['algo_field_api'];
+        $client = Algorithmia::client($apikey);
 
-    return $final_content;
+        //send our post content to Algorithmia's AI for processing!
+        $algo = $client->algo("nlp/Summarizer/0.1.8");
+        $result = $algo->pipe($in_content)->result;
+
+        //concatenate our final result
+        $content = $summary_title.
+                        $result.
+                        "<hr/>".
+                        $in_content;
+    }
+
+    return $content;
 }
 
 
