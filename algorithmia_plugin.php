@@ -2,7 +2,7 @@
 /*
 Plugin Name: Algorithmia AI
 Plugin URI: https://algorithmia.com
-Description: Use AI to power your WordPress websites.
+Description: Use Algorithmia Artificial Intelligence in your WordPress.
 Text Domain: algo
 Version: 1.0
 Author: kenburcham@gmail.com
