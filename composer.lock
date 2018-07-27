@@ -4,28 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "67e9971321fc3403db135ab18550eb1e",
-    "content-hash": "36fae15eb59439c55466c317aa9288f5",
+    "hash": "8d36c264272a381ddce818d773474437",
+    "content-hash": "0075010da68717ee6e99bb69840d5c9c",
     "packages": [
         {
             "name": "algorithmia/algorithmia",
-            "version": "v1.0.1",
+            "version": "dev-php56",
             "source": {
                 "type": "git",
-                "url": "https://github.com/algorithmiaio/algorithmia-php.git",
-                "reference": "4ad50b70aa361c5e01c894c64971db215876d09e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/algorithmiaio/algorithmia-php/zipball/4ad50b70aa361c5e01c894c64971db215876d09e",
-                "reference": "4ad50b70aa361c5e01c894c64971db215876d09e",
-                "shasum": ""
+                "url": "https://github.com/kenburcham/algorithmia-php",
+                "reference": "6da6906f172ab83735f217fed87e68e9f1b95f01"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6"
+                "phpunit/phpunit": "^5"
             },
             "type": "library",
             "autoload": {
@@ -33,7 +27,6 @@
                     "Algorithmia": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -49,7 +42,7 @@
             ],
             "description": "PHP Client for Algorithmia.com",
             "homepage": "https://algorithmia.com",
-            "time": "2018-07-02 15:23:21"
+            "time": "2018-07-27 19:23:54"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -286,7 +279,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "algorithmia/algorithmia": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
