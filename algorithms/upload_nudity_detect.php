@@ -23,24 +23,31 @@ function algo_nudity_detect( $in_file ) {
         //only check image uploads
         if ( filetype_is_image( $file['type'] )) {
 
-            //check if it is recognized with nudity
-            if ( is_it_nude( $file['file'], $file['url'] ) )
-            {
-                //check our setting - are we configured to block the file?
-                $blockit = array_key_exists('algo_field_und_block', get_option('algo_options')) && get_option('algo_options')['algo_field_und_block'];
+            try{
 
-                if($blockit){
-                    //nude image and blocking
-                    $file = array('error' => "Error: Nudity detected in image and blocking is enabled.");
+                //check if it is recognized with nudity
+                if ( is_it_nude( $file['file'], $file['url'] ) )
+                {
+                    //check our setting - are we configured to block the file?
+                    $blockit = array_key_exists('algo_field_und_block', get_option('algo_options')) && get_option('algo_options')['algo_field_und_block'];
+
+                    if($blockit){
+                        //nude image and blocking
+                        $file = array('error' => "Error: Nudity detected in image and blocking is enabled.");
+                    }
+                    else{
+                        //nude image but not blocking, save for our add_attachment handler to add the alttext later
+                        $detected_files = get_option('algo_options_und_detected');
+                        $detected_files[$file['file']]="true";
+                        update_option('algo_options_und_detected',$detected_files);
+                    }
                 }
-                else{
-                    //nude image but not blocking, save for our add_attachment handler to add the alttext later
-                    $detected_files = get_option('algo_options_und_detected');
-                    $detected_files[$file['file']]="true";
-                    update_option('algo_options_und_detected',$detected_files);
-                }
+                //not nude so do nothing!
+
+            //in the case of an exception, we'll just quietly carry on since we're in an ajax call
+            }catch(Exception $e){
+                //silence
             }
-            //not nude so do nothing!
         } 
     }
 
@@ -122,11 +129,11 @@ function is_it_nude($in_image_path, $in_image_url)
     
     //the results come back as a PHP object. handy!
     $result = $algo->pipe($input)->result;
-    
+
     //each algorithm responds with results their own way.
     // see the algorithm documentation to determine what you may need to use the results.
     // for this example, the algorithm returns "nude = true" if it is, in fact, nude.
-    return $result->nude == "true";
+    return ($result->nude === true || $result->nude === "true");
     
 }
 
@@ -183,7 +190,7 @@ function algo_upload_nudity_detect_settings_init() {
             'label_for' => 'algo_field_und_algo',
             'class' => 'algo_row',
             'algo_custom_data' => 'custom',
-            'default' => "sfw/NudityDetection/1.1.6"
+            'default' => "sfw/NudityDetectioni2v/0.2.12"
         ]
     );
 

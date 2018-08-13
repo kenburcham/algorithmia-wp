@@ -1,5 +1,11 @@
 {
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/kenburcham/algorithmia-php"
+        }
+    ],
     "require": {
-        "algorithmia/algorithmia": "^1.0"
+        "algorithmia/algorithmia":"dev-php56"
     }
 }

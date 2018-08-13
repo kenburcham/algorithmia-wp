@@ -1,5 +1,5 @@
 ![](assets/banner-772x250.png)
-# Algorithmia AI
+# Algorithmia AI WordPress Plugin
 
 > Use [Algorithmia](https://algorithmia.com) AI algorithms from the [marketplace](https://algorithmia.com/algorithms) in your WordPress website.
 
