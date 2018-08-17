@@ -4,7 +4,7 @@ Tags: algorithmia, algorithm, ai, artificial intelligence, machine learning, tem
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9.7
-Stable tag: 1.0.8
+Stable tag: 2.0.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -48,16 +48,19 @@ This section describes how to install the plugin and get it working.
 
 = Do I need to Register for Algorithmia? =
 
-Yes. Visit https://algorithmia.com to register.
+Yes. Visit [algorithmia.com](https://algorithmia.com) to register.
 
 = What other algorithms are supported? =
 
-This plugin currently supports object detection and nudity detection in images, but any Algorithmia API can be integrated. Use this plugin as a template and visit https://algorithmia.com/algorithms to find other APIs.
+This plugin currently supports image object detection, nudity detection, and text summarization -- but any Algorithmia API can be integrated. Use this plugin as a template and visit [algorithmia.com/algorithms](https://algorithmia.com/algorithms) to find other APIs.
 
 == Changelog ==
 
 = 1.0 =
 * Initial release of (old) content recommendation widget.
 
-= 1.0.8 =
+= 2.0 =
 * Complete rewrite using official Algorithmia PHP Client
+
+= 2.0.1 =
+* Require trunk of algorithmiaio/algorithmia-php (PHP 5.6-7 compatible)
