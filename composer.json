@@ -2,10 +2,10 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/kenburcham/algorithmia-php"
+            "url": "https://github.com/algorithmiaio/algorithmia-php"
         }
     ],
     "require": {
-        "algorithmia/algorithmia":"dev-php56"
+        "algorithmia/algorithmia":"dev-master"
     }
 }

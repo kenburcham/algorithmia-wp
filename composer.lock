@@ -1,19 +1,18 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "8d36c264272a381ddce818d773474437",
-    "content-hash": "0075010da68717ee6e99bb69840d5c9c",
+    "content-hash": "c4eeed9c8b6a56f9fa102abe0780680b",
     "packages": [
         {
             "name": "algorithmia/algorithmia",
-            "version": "dev-php56",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kenburcham/algorithmia-php",
-                "reference": "6da6906f172ab83735f217fed87e68e9f1b95f01"
+                "url": "https://github.com/algorithmiaio/algorithmia-php",
+                "reference": "fc3679cee9fd3a3ce0652886fac7bf10a958fbfb"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3"
@@ -42,7 +41,7 @@
             ],
             "description": "PHP Client for Algorithmia.com",
             "homepage": "https://algorithmia.com",
-            "time": "2018-07-27 19:23:54"
+            "time": "2018-08-16T21:08:57+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -107,7 +106,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-04-22 15:46:56"
+            "time": "2018-04-22T15:46:56+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -158,7 +157,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20 10:07:11"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -223,7 +222,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20 17:10:46"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "psr/http-message",
@@ -273,7 +272,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         }
     ],
     "packages-dev": [],
